@@ -61,11 +61,10 @@ if uploaded_file is not None:
         
         with col1:
             st.subheader("Original Uploaded Image")
-            # use_container_width is standard for st.image
-            st.image(img, use_container_width=True)
+            # width='stretch' is the modern replacement for use_container_width=True
+            st.image(img, width="stretch")
             
-        # Button to predict
-        if st.button("Predict Digit", type="primary", use_container_width=True):
+        if st.button("Predict Digit", type="primary"):
             with st.spinner("Processing image and predicting..."):
                 try:
                     # Save the uploaded file temporarily so prediction.py can read it from path
@@ -87,7 +86,7 @@ if uploaded_file is not None:
                         st.subheader("Processed 28x28 Image")
                         if os.path.exists("processed_input_image.png"):
                             processed_img = Image.open("processed_input_image.png")
-                            st.image(processed_img, use_container_width=True, caption="What the model sees")
+                            st.image(processed_img, width="stretch", caption="What the model sees")
                     
                     # Clean up temp file
                     os.remove(temp_path)
