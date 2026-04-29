@@ -8,6 +8,19 @@ import tempfile
 from PIL import Image
 from prediction import predict_digit
 
+import joblib
+
+# Cache the model so it loads only once when the app starts
+@st.cache_resource
+def get_model(model_path="model.pkl"):
+    if not os.path.exists(model_path):
+        st.error(f"Model file '{model_path}' not found! Please upload it or train the model locally.")
+        st.stop()
+    return joblib.load(model_path)
+
+# Load the cached model
+trained_model = get_model()
+
 # Set up page config
 st.set_page_config(
     page_title="Handwritten Digit Recognizer",
@@ -62,7 +75,8 @@ if uploaded_file is not None:
                     
                     # Call predict_digit
                     # We pass display_plot=False to avoid blocking the Streamlit server
-                    predicted_digit = predict_digit(temp_path, model_path="model.pkl", display_plot=False)
+                    # We pass model=trained_model to utilize Streamlit's caching
+                    predicted_digit = predict_digit(temp_path, model=trained_model, display_plot=False)
                     
                     # Display Prediction
                     st.success("Prediction complete!")

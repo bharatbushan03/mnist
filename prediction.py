@@ -79,7 +79,7 @@ def preprocess_image(image_path):
     
     return img_flattened, img_array
 
-def predict_digit(image_path: str, model_path: str = "model.pkl", display_plot: bool = True) -> int:
+def predict_digit(image_path: str, model_path: str = "model.pkl", display_plot: bool = True, model=None) -> int:
     """
     Predicts the digit from an image using the specified model.
     
@@ -91,7 +91,8 @@ def predict_digit(image_path: str, model_path: str = "model.pkl", display_plot: 
         int: The predicted digit label.
     """
     # 1. Load the model
-    model = load_trained_model(model_path)
+    if model is None:
+        model = load_trained_model(model_path)
     
     # 2. Preprocess the external image
     print(f"Preprocessing image '{image_path}'...")
